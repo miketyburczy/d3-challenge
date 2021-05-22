@@ -1,6 +1,6 @@
 // @TODO: YOUR CODE HERE!
 var svgWidth = 960;
-var vvgHeight = 620;
+var svgHeight = 620;
 
 var margin = {
     top:20,
@@ -27,3 +27,16 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
         data.poverty = +data.poverty;
         data.healthcare = +data.healthcare;
     })})
+
+var xLinearScale = d3.scaleLinear()
+    .domain([0, d3.max(stateData, d => d.poverty)])
+    .range([height, 0]);
+
+var yLinearScale = d3.scaleLinear()
+.domain([0, d3.max(stateData, d=> d.healthcare)])
+.range([height, 0]);
+
+var bottomAxis = d3.axisBottom(xLinearScale)
+
+var leftAxis = d3 axisLeft(yLinearScale)
+
