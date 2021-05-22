@@ -47,4 +47,27 @@ chartGroup.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis)
 
-    
+var criclesGroup = chartGroup.selectAll("circle")
+    .data(stateData)
+    .enter()
+    .append("circle")
+    .attr("cy", d=> yLinearScale(d.healthcare))
+    .attr("cx", d=> xLinearScale(d.poverty))
+    .attr("r", "17")
+    .attr("fill", "green")
+    .attr("opacity", ".4")
+
+var toolTip = d3.tip()
+    .attr("class", "tooltip")
+    .offset([-8,0])
+    .html(function (d) {
+        return(`{d.state} Healthcare: ${d.healthcare} Poverty: ${d.poverty}`);
+    });
+
+chartGroup.call(toolTip);
+
+circlesGroup.on("click", function (data) {
+    toolTip.show(data, this);
+})
+
+
