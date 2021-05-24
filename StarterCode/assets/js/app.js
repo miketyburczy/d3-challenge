@@ -57,28 +57,28 @@ var circlesGroup = chartGroup.selectAll("circle")
     .attr("fill", "green")
     .attr("opacity", ".4")
 
-var circlesText = circlesGroup.selectAll(".stateText")
+var circlesText = chartGroup.selectAll(".stateText")
     .data(stateData)
     .enter()
     .append("text")
     .classed ("stateText", true)
     .text(d => d.abbr)
-    .attr("dx", d=> xLinearScale(d.poverty))
-    .attr("dy", d=> yLinearScale(d.healthcare)+5)
+    .attr("dx", d => xLinearScale(d.poverty))
+    .attr("dy", d => yLinearScale(d.healthcare))
     .attr("font-size", "12px")
     .attr("text-anchor", "middle")
     .attr("fill", "white");
 
 var toolTip = d3.tip()
     .attr("class", "tooltip")
-    .offset([-8, 0])
+    .offset([80, -60])
     .html(function (d) {
         return (`<h4> ${d.state}: </h4> <br> Healthcare: ${d.healthcare} <br> Poverty: ${d.poverty}`);
     });
 
 chartGroup.call(toolTip);
 
-circlesGroup.on("click", function (data) {
+circlesGroup.on("mouseover", function (data) {
     toolTip.show(data, this);
 })
 
@@ -89,7 +89,7 @@ circlesGroup.on("click", function (data) {
 chartGroup.append("text")
     .attr("transform", "rotate(-90)")
     .attr("x", 0 - (height / 2))
-    .attr("y", 0 - margin.left + 50)
+    .attr("y", 0 - margin.left + 40)
     .attr("dy", "1em")
     .attr("class", "axisText")
     .style("font", "20px sans-serif")
