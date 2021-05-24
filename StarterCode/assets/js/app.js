@@ -26,8 +26,7 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     stateData.forEach(function (data) {
         data.poverty = +data.poverty;
         data.healthcare = +data.healthcare;
-    })
-})
+    });
 
 var xLinearScale = d3.scaleLinear()
     .domain([0, d3.max(stateData, d => d.poverty)])
@@ -42,13 +41,13 @@ var bottomAxis = d3.axisBottom(xLinearScale)
 var leftAxis = d3.axisLeft(yLinearScale)
 
 chartGroup.append("g")
-call(leftAxis);
+    .call(leftAxis);
 
 chartGroup.append("g")
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis)
 
-var criclesGroup = chartGroup.selectAll("circle")
+var circlesGroup = chartGroup.selectAll("circle")
     .data(stateData)
     .enter()
     .append("circle")
@@ -62,7 +61,7 @@ var toolTip = d3.tip()
     .attr("class", "tooltip")
     .offset([-8, 0])
     .html(function (d) {
-        return (`{d.state} Healthcare: ${d.healthcare} Poverty: ${d.poverty}`);
+        return (`${d.state} <br> Healthcare: ${d.healthcare} <br> Poverty: ${d.poverty}`);
     });
 
 chartGroup.call(toolTip);
@@ -71,7 +70,7 @@ circlesGroup.on("click", function (data) {
     toolTip.show(data, this);
 })
 
-    .on("mouseut", function (data, index) {
+    .on("mouseout", function (data, index) {
         toolTip.hide(data);
     });
 
@@ -89,3 +88,4 @@ chartGroup.append("text")
     .attr("class", "axisText")
     .style("font", "20px sans-serif")
     .text("Population Poverty");
+});
