@@ -57,11 +57,23 @@ var circlesGroup = chartGroup.selectAll("circle")
     .attr("fill", "green")
     .attr("opacity", ".4")
 
+var circlesText = circlesGroup.selectAll(".stateText")
+    .data(stateData)
+    .enter()
+    .append("text")
+    .classed ("stateText", true)
+    .text(d => d.abbr)
+    .attr("dx", d=> xLinearScale(d.poverty))
+    .attr("dy", d=> yLinearScale(d.healthcare)+5)
+    .attr("font-size", "12px")
+    .attr("text-anchor", "middle")
+    .attr("fill", "white");
+
 var toolTip = d3.tip()
     .attr("class", "tooltip")
     .offset([-8, 0])
     .html(function (d) {
-        return (`${d.state} <br> Healthcare: ${d.healthcare} <br> Poverty: ${d.poverty}`);
+        return (`<h4> ${d.state}: </h4> <br> Healthcare: ${d.healthcare} <br> Poverty: ${d.poverty}`);
     });
 
 chartGroup.call(toolTip);
@@ -81,11 +93,11 @@ chartGroup.append("text")
     .attr("dy", "1em")
     .attr("class", "axisText")
     .style("font", "20px sans-serif")
-    .text("Population w/out Healthcare");
+    .text("Lacks Healthcare (%)");
 
 chartGroup.append("text")
     .attr("transform", `translate(${width / 2}, ${height + margin.top + 40})`)
     .attr("class", "axisText")
     .style("font", "20px sans-serif")
-    .text("Population Poverty");
+    .text("In Poverty (%)");
 });
