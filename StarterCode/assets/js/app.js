@@ -29,11 +29,11 @@ d3.csv("assets/data/data.csv").then(function (stateData) {
     });
 
 var xLinearScale = d3.scaleLinear()
-    .domain([0, d3.max(stateData, d => d.poverty)])
+    .domain([8, d3.max(stateData, d => d.poverty)])
     .range([0, width]);
 
 var yLinearScale = d3.scaleLinear()
-    .domain([0, d3.max(stateData, d => d.healthcare)])
+    .domain([3.5, d3.max(stateData, d => d.healthcare)])
     .range([height, 0]);
 
 var bottomAxis = d3.axisBottom(xLinearScale)
@@ -53,7 +53,7 @@ var circlesGroup = chartGroup.selectAll("circle")
     .append("circle")
     .attr("cy", d => yLinearScale(d.healthcare))
     .attr("cx", d => xLinearScale(d.poverty))
-    .attr("r", "17")
+    .attr("r", "14")
     .attr("fill", "green")
     .attr("opacity", ".4")
 
@@ -65,15 +65,21 @@ var circlesText = chartGroup.selectAll(".stateText")
     .text(d => d.abbr)
     .attr("dx", d => xLinearScale(d.poverty))
     .attr("dy", d => yLinearScale(d.healthcare))
-    .attr("font-size", "12px")
+    .attr("font-size", "10px")
     .attr("text-anchor", "middle")
     .attr("fill", "white");
 
 var toolTip = d3.tip()
     .attr("class", "tooltip")
     .offset([80, -60])
+    .style("position", "absolute")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "1px")
+    .style("border-radius", "5px")
+    .style("padding", "10px")
     .html(function (d) {
-        return (`<h4> ${d.state}: </h4> <br> Healthcare: ${d.healthcare} <br> Poverty: ${d.poverty}`);
+        return (`<h4> ${d.state}: </h4> <br> Healthcare: ${d.healthcare}% <br> Poverty: ${d.poverty}%`);
     });
 
 chartGroup.call(toolTip);
@@ -88,16 +94,16 @@ circlesGroup.on("mouseover", function (data) {
 
 chartGroup.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("x", 0 - (height / 2))
-    .attr("y", 0 - margin.left + 40)
+    .attr("x", 0 - 250)
+    .attr("y", 0 - 50)
     .attr("dy", "1em")
     .attr("class", "axisText")
-    .style("font", "20px sans-serif")
+    .style("font", "16px sans-serif")
     .text("Lacks Healthcare (%)");
 
 chartGroup.append("text")
-    .attr("transform", `translate(${width / 2}, ${height + margin.top + 40})`)
+    .attr("transform", `translate(${width / 2.5}, ${height + margin.top + 25})`)
     .attr("class", "axisText")
-    .style("font", "20px sans-serif")
+    .style("font", "16px sans-serif")
     .text("In Poverty (%)");
 });
